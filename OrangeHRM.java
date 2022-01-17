@@ -1,12 +1,14 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import java.time.Duration;
-
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.openqa.selenium.Keys.*;
 
 
 public class OrangeHRM {
@@ -44,18 +46,20 @@ public class OrangeHRM {
         WebElement employeeName = driver.findElement(By.name("systemUser[employeeName][empName]"));
         employeeName.sendKeys("Admin A");
         WebElement userName = driver.findElement(By.name("systemUser[userName]"));
-        userName.sendKeys("Akshay");
+        userName.sendKeys("Lovelesh");
         Select dropdown1 = new Select(driver.findElement(By.name("systemUser[status]")));
         dropdown1.selectByVisibleText("Enabled");
         WebElement Password = driver.findElement(By.name("systemUser[password]"));
-        Password.sendKeys("@Aayush456648");
+        Password.sendKeys("@Lovelesh456648");
         WebElement confirmPassword = driver.findElement(By.name("systemUser[confirmPassword]"));
-        confirmPassword.sendKeys("@Aayush456648");
+        confirmPassword.sendKeys("@Lovelesh456648");
 
-        WebElement s1 = driver.findElement(By.name("btnSave"));
-        s1.click();
+        driver.findElement(By.name("btnSave")).sendKeys(Keys.ENTER);
+        //WebElement save = driver.findElement(By.name("btnSave"));
+        //save.click();
+        //System.out.println("Hello");
 
         Thread.sleep(2000);
-        //driver.close();
+       // driver.close();
     }
 }
