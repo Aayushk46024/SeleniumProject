@@ -46,20 +46,24 @@ public class OrangeHRM {
         WebElement employeeName = driver.findElement(By.name("systemUser[employeeName][empName]"));
         employeeName.sendKeys("Admin A");
         WebElement userName = driver.findElement(By.name("systemUser[userName]"));
-        userName.sendKeys("Lovelesh");
+        userName.sendKeys("Vineet");
         Select dropdown1 = new Select(driver.findElement(By.name("systemUser[status]")));
         dropdown1.selectByVisibleText("Enabled");
         WebElement Password = driver.findElement(By.name("systemUser[password]"));
-        Password.sendKeys("@Lovelesh456648");
+        Password.sendKeys("#Vin102030");
         WebElement confirmPassword = driver.findElement(By.name("systemUser[confirmPassword]"));
-        confirmPassword.sendKeys("@Lovelesh456648");
+        confirmPassword.sendKeys("#Vin102030");
 
-        driver.findElement(By.name("btnSave")).sendKeys(Keys.ENTER);
-        //WebElement save = driver.findElement(By.name("btnSave"));
-        //save.click();
+        //driver.findElement(By.xpath("//*[@id=\"btnSave\"]")).click();
+        WebElement save = driver.findElement(By.name("btnSave"));
+        save.click();
         //System.out.println("Hello");
 
+        if(driver.getPageSource().contains("Successfully saved"))
+            System.out.println("Successfully saved");
+        System.out.println("*********************");
+
         Thread.sleep(2000);
-       // driver.close();
+        //driver.close();
     }
 }
