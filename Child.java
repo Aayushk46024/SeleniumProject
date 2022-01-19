@@ -5,12 +5,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.Random;
 
 class Parent {
 
     WebDriver driver = new ChromeDriver();
+    String names[] = {"Aayush", "Sachin", "Shiphali", "Amanjeet", "Gulshan", "Purvaa", "Gunshajam"};
+    String userName =  names[new Random().nextInt(names.length)];
 
     void login() {
 
@@ -24,9 +28,13 @@ class Parent {
         driver.findElement(By.id("txtUsername")).sendKeys("Admin");
         driver.findElement(By.id("txtPassword")).sendKeys("admin123");
         driver.findElement(By.name("Submit")).click();
+
+        String actualUrl="https://opensource-demo.orangehrmlive.com/index.php/dashboard";
+        String expectedUrl= driver.getCurrentUrl();
+        Assert.assertEquals(actualUrl, expectedUrl);
     }
 
-    void addUser() {
+    void addUser() throws InterruptedException {
 
         driver.findElement(By.id("menu_admin_viewAdminModule")).click();
         driver.findElement(By.id("btnAdd")).click();
@@ -34,30 +42,44 @@ class Parent {
 
         Select dropdown = new Select(driver.findElement(By.name("systemUser[userType]")));
         dropdown.selectByVisibleText("Admin");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        Thread.sleep(1000);
         driver.findElement(By.name("systemUser[employeeName][empName]")).sendKeys("Admin A");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.findElement(By.name("systemUser[userName]")).sendKeys("Aayushkhand");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        Thread.sleep(1000);
+        //String uuid = UUID.randomUUID().toString();
+
+        driver.findElement(By.name("systemUser[userName]")).sendKeys(userName);
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+//        wait.until(ExpectedConditions.elementToBeClickable(By.name("systemUser[userName]")));
+        Thread.sleep(1000);
         Select dropdown1 = new Select(driver.findElement(By.name("systemUser[status]")));
         dropdown1.selectByVisibleText("Enabled");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.findElement(By.name("systemUser[password]")).sendKeys("#Pur102030");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.findElement(By.name("systemUser[confirmPassword]")).sendKeys("#Pur102030");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        Thread.sleep(1000);
+        driver.findElement(By.name("systemUser[password]")).sendKeys("#qazx3598!");
+        Thread.sleep(1000);
+        driver.findElement(By.name("systemUser[confirmPassword]")).sendKeys("#qazx3598!");
+        Thread.sleep(1000);
 
         JavascriptExecutor js = (JavascriptExecutor)driver;
         js.executeScript("window.scrollBy(0,350)", "");
-        driver.findElement(By.name("btnSave")).click();
+        driver.findElement(By.id("btnSave")).click();
+
+//        boolean msg = driver.getPageSource().contains("Successfully Saved");
+//        Assert.assertTrue(msg);
+//        System.out.println(msg);
+//        WebElement ele = driver.findElement(By.xpath("//div[@class='modal hide']//div[contains(text(),'Successfully Saved'))]"));
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+//        wait.until(ExpectedConditions.visibilityOf(ele));
+//        Assert.assertTrue(ele.isDisplayed(), "Success Message is Not Displayed");
+
     }
 
     void search() {
 
         driver.findElement(By.id("menu_admin_viewAdminModule")).click();
 
+        //String uuid = UUID.randomUUID().toString();
         WebElement search = driver.findElement(By.id("searchSystemUser_userName"));
-        search.sendKeys("Aayushkhand");
+        search.sendKeys(userName);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
 
@@ -104,6 +126,46 @@ class Parent {
 
     }
 
+    void edit() throws InterruptedException {
+        driver.findElement(By.id("menu_admin_viewAdminModule")).click();
+
+        driver.findElement(By.partialLinkText("Aaliyah.Haq")).click();
+
+        driver.findElement(By.id("btnSave")).click();
+        Thread.sleep(1000);
+
+        Select dropdown = new Select(driver.findElement(By.name("systemUser[userType]")));
+        dropdown.selectByVisibleText("Admin");
+        Thread.sleep(1000);
+        driver.findElement(By.name("systemUser[employeeName][empName]")).sendKeys("Admin A");
+        Thread.sleep(1000);
+
+        driver.findElement(By.name("systemUser[userName]")).sendKeys(userName);
+        Thread.sleep(1000);
+        Select dropdown1 = new Select(driver.findElement(By.name("systemUser[status]")));
+        dropdown1.selectByVisibleText("Enabled");
+        Thread.sleep(1000);
+
+        driver.findElement(By.id("btnSave")).click();
+
+    }
+
+    void recruitment() throws InterruptedException {
+        WebElement recruitment = driver.findElement(By.id("menu_recruitment_viewRecruitmentModule"));
+        recruitment.click();
+
+        WebElement fromDate = driver.findElement(By.id("candidateSearch_fromDate"));
+        fromDate.clear();
+        fromDate.sendKeys("2021-01-01");
+
+        WebElement toDate = driver.findElement(By.id("candidateSearch_toDate"));
+        toDate.clear();
+        toDate.sendKeys("2021-01-10");
+
+        driver.findElement(By.id("btnSrch")).click();
+
+
+    }
     void logout() {
 
         driver.findElement(By.id("welcome")).click();
@@ -123,10 +185,12 @@ public class Child extends Parent {
 
         Child c1 = new Child();
         c1.login();
-        c1.addUser();
-        c1.search();
-        c1.delete();
-        c1.logout();
+        //c1.addUser();
+        //c1.search();
+        c1.edit();
+        //c1.recruitment();
+//        c1.delete();
+//        c1.logout();
 
     }
 }
